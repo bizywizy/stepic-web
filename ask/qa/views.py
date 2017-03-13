@@ -30,5 +30,6 @@ def popular_page(request):
 def detail_page(request, pk):
     question = get_object_or_404(Question, pk)
     return render(request, 'qa/detail.html', {
-        'question': question
+        'question': question,
+        'answers': question.answer_set.all()
     })

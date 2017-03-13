@@ -5,10 +5,10 @@ from django.urls import reverse
 
 class QuestionManager(models.Manager):
     def new(self):
-        return super(QuestionManager, self).get_query_set().order_by('added_at')
+        return super(QuestionManager, self).get_queryset().order_by('-added_at')
 
     def popular(self):
-        return super(QuestionManager, self).get_query_set().annotate(Count('likes')).order_by('likes__count')
+        return super(QuestionManager, self).get_queryset().annotate(models.Count('likes')).order_by('likes__count')
 
 
 class Question(models.Model):
@@ -21,7 +21,7 @@ class Question(models.Model):
     objects = QuestionManager()
 
     def get_absolute_url(self):
-        return reverse('qa.detail', args=[self.pk, ])
+        return reverse('detail', args=[self.pk, ])
 
 
 class Answer(models.Model):

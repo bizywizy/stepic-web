@@ -1,8 +1,8 @@
-{% extends 'templates/qa/base.html' %}
+{% extends 'qa/base.html' %}
 {% block title %}{{ block.super }}Главная{% endblock %}
 {% block content %}
 {% for question in questions %}
-    <a href="{% question.get_absolute_url %}">{{ question.title }}</a>
+    <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
 {% endfor %}
 
 {% endblock %}
