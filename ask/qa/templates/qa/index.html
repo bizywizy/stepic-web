@@ -2,7 +2,18 @@
 {% block title %}{{ block.super }}Главная{% endblock %}
 {% block content %}
 {% for question in questions %}
+    <div class="well well-lg">
     <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
+    </div>
 {% endfor %}
-
+<ul class="pager">
+{% if page.has_other_pages %}
+    {% if page.has_previous %}
+        <li><a href="{{ page.base_url }}{{ page.previous_page_number }}">Previous</a></li>
+    {% endif %}
+    {% if page.has_next %}
+        <li><a href="{{ page.base_url }}{{ page.next_page_number }}">Next</a></li>
+    {% endif %}
+{% endif %}
+  </ul>
 {% endblock %}

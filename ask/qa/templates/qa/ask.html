@@ -1,20 +1,7 @@
 {% extends 'qa/base.html' %}
-{% block title %}
-{{ block.super }} {{ question.id }}
-{% endblock %}
+{% block title %}block.super Задать вопрос {% endblock %}
 {% block content %}
-    <div class="well well-lg">
-    <h1>{{ question.title }}</h1>
-    <p>{{ question.text }}</p>
-    {% for answer in answers %}
-        <div class="well">
-        {{ answer.text }}
-        </div>
-    {% endfor %}
-    {% for e in form.non_field_errors %}
-        <div class="alert alert-danger">{{ e }}</div>
-    {% endfor %}
-    <form class="form-horizontal" method="post" action="/question/{{ question.id }}/">
+<form class="form-horizontal" method="post" action="{% url 'ask' %}">
         <fieldset>
             {% for field in form %}
                 <div class="control-group
@@ -28,6 +15,5 @@
         <div class="form-actions">
             <button type="submit" class="btn btn-primary">Ответить</button>
         </div>
-    </form>
-    </div>
+</form>
 {% endblock %}
