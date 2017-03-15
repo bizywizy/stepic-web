@@ -14,24 +14,8 @@ class IndexView(ListView):
     paginate_by = 10
 
 
-def index_page(request):
-    last_questions = Question.objects.new()
-    page = paginate(request, last_questions)
-    page.base_url = '/?page='
-    return render(request, 'qa/index.html', {
-        'questions': page.object_list,
-        'page': page,
-    })
-
-
-def popular_page(request):
-    popular_questions = Question.objects.popular()
-    page = paginate(request, popular_questions)
-    page.base_url = '/popular/?page='
-    return render(request, 'qa/index.html', {
-        'questions': page.object_list,
-        'page': page
-    })
+class PopularView(IndexView):
+    queryset = Question.objects.popular()
 
 
 def detail_page(request, pk):
