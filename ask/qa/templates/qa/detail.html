@@ -8,6 +8,7 @@
     <p>{{ question.text }}</p>
     {% for answer in answers %}
         <div class="well">
+        <h3>{{ answer.author }}</h3>
         {{ answer.text }}
         </div>
     {% endfor %}

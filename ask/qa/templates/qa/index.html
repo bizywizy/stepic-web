@@ -3,6 +3,7 @@
 {% block content %}
 {% for question in questions %}
     <div class="well well-lg">
+    <h3>{{ question.author.username }}</h3>
     <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
     </div>
 {% endfor %}
