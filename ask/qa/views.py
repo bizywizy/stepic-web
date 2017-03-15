@@ -1,4 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth import views, authenticate
 
 from .models import Question
 from .utils import paginate
@@ -63,6 +64,8 @@ def signup_page(request):
         form = SignupForm(request.POST)
         if form.is_valid():
             form.save()
+            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
+            views.login(request, user)
             return redirect('index')
     return render(request, 'qa/signup.html', {
         'form': form
