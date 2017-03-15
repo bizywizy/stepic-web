@@ -7,14 +7,14 @@
     <a href="{{ question.get_absolute_url }}">{{ question.title }}</a>
     </div>
 {% endfor %}
+    {% if is_paginated %}
 <ul class="pager">
-{% if page.has_other_pages %}
-    {% if page.has_previous %}
-        <li><a href="{{ page.base_url }}{{ page.previous_page_number }}">Previous</a></li>
+    {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
     {% endif %}
-    {% if page.has_next %}
-        <li><a href="{{ page.base_url }}{{ page.next_page_number }}">Next</a></li>
+    {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">Next</a></li>
     {% endif %}
-{% endif %}
   </ul>
+    {% endif %}
 {% endblock %}

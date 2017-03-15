@@ -1,9 +1,17 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.contrib.auth import views, authenticate
+from django.views.generic import ListView
 
 from .models import Question
 from .utils import paginate
 from .forms import *
+
+
+class IndexView(ListView):
+    queryset = Question.objects.new()
+    context_object_name = 'questions'
+    template_name = 'qa/index.html'
+    paginate_by = 10
 
 
 def index_page(request):
@@ -70,4 +78,3 @@ def signup_page(request):
     return render(request, 'qa/signup.html', {
         'form': form
     })
-
