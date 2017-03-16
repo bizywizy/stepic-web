@@ -1,5 +1,5 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from django.contrib.auth import views, authenticate
+from django.contrib.auth import PermissionDenied
 from django.views.generic import ListView, CreateView, FormView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -17,9 +17,14 @@ class PopularView(IndexView):
     queryset = Question.objects.popular()
 
 
-class AnswersView(FormView):  # TODO: forbid POST request if user is anonymous
+class AnswersView(FormView):
     form_class = AnswerForm
     template_name = 'qa/detail.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.method == 'POST' and not isinstance(request.user, User):
+            raise PermissionDenied()
+        return super(AnswersView, self).dispatch(request, *args, **kwargs)
 
     def get_success_url(self):
         return Question.objects.get(id=self.kwargs['pk']).get_absolute_url()
