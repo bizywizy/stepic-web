@@ -15,13 +15,16 @@ class AskForm(forms.Form):
         return question
 
 
-class AnswerForm(forms.Form):
+class AnswerForm(forms.ModelForm):
     text = forms.CharField(widget=forms.Textarea)
-    question_id = forms.IntegerField(widget=forms.HiddenInput)
 
-    def save(self):
+    class Meta:
+        model = Answer
+        fields = ['text']
+
+    def save(self, commit=True):
         answer = Answer(**self.cleaned_data)
-        answer.author = self._user
+        answer.question_id = self.initial['question_id']
         answer.save()
         return answer
 
