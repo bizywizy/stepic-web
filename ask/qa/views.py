@@ -44,28 +44,15 @@ class AnswersView(FormView):
         return redirect(self.get_success_url())
 
 
-class AskView(LoginRequiredMixin, CreateView):
+class AskView(LoginRequiredMixin, FormView):
     model = Question
     form_class = AskForm
     template_name = 'qa/ask.html'
+    login_url = '/login/'
 
     def form_valid(self, form):
-        question = form.save(commit=False)
-
-
-
-def ask_page(request):
-    if request.method == 'GET':
-        form = AskForm()
-    elif request.method == 'POST' and request.user.is_authenticated():
-        form = AskForm(request.POST)
-        form._user = request.user
-        if form.is_valid():
-            question = form.save()
-            return redirect(question.get_absolute_url())
-    return render(request, 'qa/ask.html', {
-        'form': form
-    })
+        question = form.save()
+        return redirect(question.get_absolute_url())
 
 
 def signup_page(request):
