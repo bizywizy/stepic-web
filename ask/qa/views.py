@@ -22,7 +22,7 @@ class AnswersView(FormView):
     template_name = 'qa/detail.html'
 
     def dispatch(self, request, *args, **kwargs):
-        if request.method == 'POST' and not isinstance(request.user, User):
+        if request.method == 'POST' and not request.user.is_authenticated():
             raise PermissionDenied()
         return super(AnswersView, self).dispatch(request, *args, **kwargs)
 
@@ -60,11 +60,15 @@ class AskView(LoginRequiredMixin, FormView):
         return redirect(question.get_absolute_url())
 
 
-class SignupView(FormView):  # TODO: check of user logged in
+class SignupView(FormView):
     model = User
     form_class = SignupForm
     template_name = 'qa/signup.html'
     success_url = '/'
+
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            return redirect('/')
 
     def form_valid(self, form):
         form.save()
