@@ -17,7 +17,7 @@ class PopularView(IndexView):
     queryset = Question.objects.popular()
 
 
-class AnswersView(FormView):
+class AnswersView(FormView):  # TODO: forbid POST request if user is anonymous
     form_class = AnswerForm
     template_name = 'qa/detail.html'
 
@@ -55,16 +55,12 @@ class AskView(LoginRequiredMixin, FormView):
         return redirect(question.get_absolute_url())
 
 
-def signup_page(request):
-    if request.method == 'GET':
-        form = SignupForm()
-    elif request.method == 'POST':
-        form = SignupForm(request.POST)
-        if form.is_valid():
-            form.save()
-            user = authenticate(username=request.POST.get('username'), password=request.POST.get('password'))
-            views.login(request, user)
-            return redirect('index')
-    return render(request, 'qa/signup.html', {
-        'form': form
-    })
+class SignupView(FormView):  # TODO: check of user logged in
+    model = User
+    form_class = SignupForm
+    template_name = 'qa/signup.html'
+    success_url = '/'
+
+    def form_valid(self, form):
+        form.save()
+        return redirect('/')
